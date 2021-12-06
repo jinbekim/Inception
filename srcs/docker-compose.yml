@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  nginx:
+    restart:
+      always
+    build: .
+    ports:
+      - "443:443"
+  mariadb:
+    restart:
+      always
+    build: .
+    depends_on:
+      - nginx
+    volumes:
+      - db_data:/var/lib/mysql
+  wordpress:
+    restart:
+      always
+    build: .
+    depends_on:
+      - nginx
+    volumes:
+      - wordpress_data:/var/www/html
+
+networks:
+  inception:
+    name: inception
