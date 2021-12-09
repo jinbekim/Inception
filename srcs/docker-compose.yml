@@ -1,28 +1,56 @@
-version: "3.8"
+version: '3'
+volumes:
+  data: {}
+  data_db: {}
+
 services:
   nginx:
+    container_name: nginx
     restart:
       always
-    build: .
+    tty: true
+    build: ./requirements/nginx
     ports:
       - "443:443"
+    networks:
+      - inception
+    volumes:
+      - data:/var/www/html/
+
   mariadb:
+    container_name: mariadb
     restart:
       always
-    build: .
-    depends_on:
-      - nginx
+    tty: true
+    build: ./requirements/mariadb
+    expose:
+      - "3306"
+    env_file:
+      - .env
+    # the m1 has a host volumes mount issue
     volumes:
-      - db_data:/var/lib/mysql
+      - data_db:/var/lib/mysql
+    networks:
+      - inception
+
   wordpress:
     restart:
       always
-    build: .
+    tty: true
+    container_name: wordpress
+    build: ./requirements/wordpress
+    expose:
+      - "9000"
     depends_on:
-      - nginx
+      - mariadb
+    # env_file can skip
+    env_file:
+      - .env
     volumes:
-      - wordpress_data:/var/www/html
+      - data:/var/www/html
+    networks:
+      - inception
 
 networks:
   inception:
-    name: inception
+    driver: bridge
