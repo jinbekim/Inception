@@ -5,6 +5,7 @@ RUN apt-get update && apt-get upgrade && apt-get install -y \
 	mariadb-client\
 	php7.3-mysql\
 	wget\
+	curl\
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY ./conf/wp-config.php /tmp/wp-config.php
