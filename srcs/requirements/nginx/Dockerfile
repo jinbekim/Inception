@@ -3,7 +3,7 @@ FROM debian:buster
 RUN apt update && apt install -y\
 	nginx\
 	openssl\
-	&& rm -rf /var/lib/apt/lists/*
+	&& rm -rf /var/lib/apt/lists/* /etc/nginx/sites-enabled/default
 
 # copy a self-signed certificate
 COPY ./tools/inception.crt etc/ssl/certs/
