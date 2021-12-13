@@ -16,12 +16,14 @@ services:
       - inception
     volumes:
       - data:/var/www/html/
+    depends_on:
+      - wordpress
+    # volumes:
+    #   - /home/jinbekim/data/wp:/var/www/html/
 
   mariadb:
     container_name: mariadb
-    restart:
-      always
-    tty: true
+    # restart: unless-stopped
     build: ./requirements/mariadb
     expose:
       - "3306"
@@ -30,6 +32,8 @@ services:
     # the m1 has a host volumes mount issue
     volumes:
       - data_db:/var/lib/mysql
+    # volumes:
+    #   - /home/jinbekim/data/db:/var/lib/mysql
     networks:
       - inception
 
@@ -48,6 +52,8 @@ services:
       - .env
     volumes:
       - data:/var/www/html
+    # volumes:
+    #   - /home/jinbekim/data/wp:/var/www/html/
     networks:
       - inception
 
