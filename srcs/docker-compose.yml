@@ -1,25 +1,22 @@
 version: '2'
+
 volumes:
-  data: {}
-  data_db: {}
+  db: {}
 
 services:
   nginx:
     container_name: nginx
     restart:
       always
-    tty: true
     build: ./requirements/nginx
     ports:
       - "443:443"
     networks:
       - inception
     volumes:
-      - data:/var/www/html/
+      - ${WP}:/var/www/html/
     depends_on:
       - wordpress
-    # volumes:
-    #   - /home/jinbekim/data/wp:/var/www/html/
 
   mariadb:
     container_name: mariadb
@@ -31,29 +28,23 @@ services:
       - .env
     # the m1 has a host volumes mount issue
     volumes:
-      - data_db:/var/lib/mysql
-    # volumes:
-    #   - /home/jinbekim/data/db:/var/lib/mysql
+      - ${DB}:/var/lib/mysql
     networks:
       - inception
 
   wordpress:
     restart:
       always
-    tty: true
     container_name: wordpress
     build: ./requirements/wordpress
     expose:
       - "9000"
     depends_on:
       - mariadb
-    # env_file can skip
     env_file:
       - .env
     volumes:
-      - data:/var/www/html
-    # volumes:
-    #   - /home/jinbekim/data/wp:/var/www/html/
+      - ${WP}:/var/www/html
     networks:
       - inception
 
