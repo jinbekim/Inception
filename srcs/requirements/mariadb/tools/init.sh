@@ -1,6 +1,9 @@
 #!bin/bash
 
 if [ ! -d /var/lib/mysql/$DB_NAME ]; then
+	chown -R mysql:mysql /var/lib/mysql
+	mysql_install_db --user=mysql --datadir=/var/lib/mysql
+
 	#Start MariaDB
 	service mysql start
 	#Create database & create user & alter root password & grant privileges

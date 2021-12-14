@@ -1,17 +1,17 @@
 #!bin/bash
 
 # if empty
-if [ -e /var/www/html/index.nginx-debian.html ]; then
+if [ ! "$(ls -A /var/www/html/)" ]; then
 	# wordpress
 	wget -c https://wordpress.org/latest.tar.gz
 	tar -xvf latest.tar.gz
 	mv /tmp/wp-config.php /wordpress/
 	mv /wordpress/* /var/www/html/
 	chown -R www-data:www-data /var/www/html
-	rm -rf latest.tar.gz /wordpress /var/www/html/index.nginx-debian.html
+	rm -rf latest.tar.gz /wordpress
 
 	# install wordpress
-	until wp core install --allow-root --url='jinbe.42.fr' --title='WordPress for Inception' --admin_user=$WP_USER1\
+	until wp core install --allow-root --url=$DOMAIN_NAME --title='WordPress for Inception' --admin_user=$WP_USER1\
 	--admin_password=$WP_USER1_PW --admin_email="jin@student.42seoul.kr" --path='/var/www/html'; do
 	echo "##### WordPress is unavailable - sleeping"
 	sleep 1

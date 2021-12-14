@@ -1,11 +1,8 @@
-include ./srcs/.env
 
 COMPOSE = docker-compose -p inception -f srcs/docker-compose.yml
 
 .PHONY: all
 all:
-	mkdir -p $(DB)
-	mkdir -p $(WP)
 	$(COMPOSE) up -d --build
 
 .PHONY: up
