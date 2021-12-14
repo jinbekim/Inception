@@ -1,13 +1,36 @@
+include ./srcs/.env
 
+COMPOSE = docker-compose -p inception -f srcs/docker-compose.yml
+
+.PHONY: all
 all:
-	docker-compose -p inception -f srcs/docker-compose.yml up -d --build
+	mkdir -p $(DB)
+	mkdir -p $(WP)
+	$(COMPOSE) up -d --build
 
-clean:
-	docker-compose -p inception -f srcs/docker-compose.yml down
+.PHONY: up
+up:
+	$(COMPOSE) up -d
 
+.PHONY: down
+down:
+	$(COMPOSE) down
+
+.PHONY: mariadb
+mariadb:
+	$(COMPOSE) up -d mariadb
+
+.PHONY: wordpress
+wordpress:
+	$(COMPOSE) up -d wordpress
+
+.PHONY: nginx
+nginx:
+	$(COMPOSE) up -d nginx
+
+.PHONY: fclean
 fclean:
-	docker-compose -p inception -f srcs/docker-compose.yml down --rmi all --volumes
+	$(COMPOSE) down --rmi all --volumes
 
+.PHONY: re
 re: fclean all
-
-.PHONY: all clean fclean re
