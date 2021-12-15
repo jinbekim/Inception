@@ -1,7 +1,7 @@
 #!bin/bash
 
 # if empty
-if [ ! "$(ls -A /var/www/html/)" ]; then
+if [ ! -e /var/www/html/wp-config.php ]; then
 	# wordpress
 	wget -c https://wordpress.org/latest.tar.gz
 	tar -xvf latest.tar.gz

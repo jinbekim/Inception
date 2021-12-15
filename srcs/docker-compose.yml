@@ -3,36 +3,33 @@ version: '2'
 services:
   nginx:
     container_name: nginx
-    restart:
-      always
+    restart: always
     build: ./requirements/nginx
     ports:
       - "443:443"
     networks:
       - inception
     volumes:
-      - ./wp:/var/www/html/
+      - WP:/var/www/html/
     depends_on:
       - wordpress
 
   mariadb:
     container_name: mariadb
-    # restart: unless-stopped
+    restart: always
     build: ./requirements/mariadb
     expose:
       - "3306"
     env_file:
       - .env
     tty: true
-    # the m1 has a host volumes mount issue
     volumes:
-      - ./db:/var/lib/mysql
+      - DB:/var/lib/mysql
     networks:
       - inception
 
   wordpress:
-    restart:
-      always
+    restart: always
     container_name: wordpress
     build: ./requirements/wordpress
     expose:
@@ -42,9 +39,23 @@ services:
     env_file:
       - .env
     volumes:
-      - ./wp:/var/www/html
+      - WP:/var/www/html
     networks:
       - inception
+
+volumes:
+  WP:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/jinbekim/data/wp
+      o: bind
+  DB:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/jinbekim/data/db
+      o: bind
 
 networks:
   inception:
