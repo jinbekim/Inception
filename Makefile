@@ -1,7 +1,9 @@
 
 COMPOSE = docker-compose -p inception -f srcs/docker-compose.yml
-DB=/home/jinbekim/data/db
-WP=/home/jinbekim/data/wp
+# DB=/home/jinbekim/data/db
+# WP=/home/jinbekim/data/wp
+DB=./data/db
+WP=./data/wp
 
 .PHONY: all
 all:
@@ -32,6 +34,7 @@ nginx:
 fclean:
 	rm -rf $(DB) $(WP)
 	$(COMPOSE) down --rmi all --volumes
+	docker system prune -a
 
 .PHONY: re
 re: fclean all

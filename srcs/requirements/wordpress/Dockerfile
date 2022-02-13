@@ -6,9 +6,10 @@ RUN apt-get update && apt-get upgrade && apt-get install -y \
 	wget\
 	curl\
 	sendmail\
+	mariadb-client\
 	&& rm -rf /var/lib/apt/lists/*
 
-COPY ./conf/wp-config.php /tmp/wp-config.php
+# COPY ./conf/wp-config.php /tmp/wp-config.php
 COPY ./tools/init.sh ./
 
 # install wp-cli

@@ -2,12 +2,11 @@
 
 if [ ! -d /var/lib/mysql/$DB_NAME ]; then
 	chown -R mysql:mysql /var/lib/mysql
-	mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
 	#Start MariaDB
 	service mysql start
 	#Create database & create user & alter root password & grant privileges
-	mysql -e "CREATE DATABASE IF NOT EXISTS $DB_NAME CHARACTER SET utf8 COLLATE utf8_general_ci;\
+	mysql -e "CREATE DATABASE IF NOT EXISTS $DB_NAME CHARACTER SET utf8;\
 		CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_USER_PW';\
 		GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';\
 		ALTER USER 'root'@'localhost' IDENTIFIED BY '$DB_ROOT_PW'; FLUSH PRIVILEGES;"
