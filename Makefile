@@ -30,10 +30,14 @@ wordpress:
 nginx:
 	$(COMPOSE) up -d nginx
 
-.PHONY: fclean
-fclean:
+
+.PHONY: clean
+clean:
 	rm -rf $(DB) $(WP)
 	$(COMPOSE) down --rmi all --volumes
+
+.PHONY: fclean
+fclean: clean
 	docker system prune -a
 
 .PHONY: re
